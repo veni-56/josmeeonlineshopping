@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # <-- இது சேர்க்கவும்
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -36,6 +37,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "josmee_shop.urls"
 
@@ -52,10 +54,12 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "wishlist.context_processors.wishlist_count",
                 "chat.context_processors.unread_messages_count",
+            
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = "josmee_shop.wsgi.application"
 
@@ -123,3 +127,5 @@ FAST2SMS_API_KEY = os.getenv('FAST2SMS_API_KEY', '')
 
 # 4. MSG91 (https://msg91.com) - Recommended for India
 MSG91_AUTH_KEY = os.getenv('MSG91_AUTH_KEY', '')
+# Production-ready static files handling
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
