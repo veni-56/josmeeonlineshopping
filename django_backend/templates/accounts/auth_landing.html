@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Get Started - Karupatti Shop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold mb-3">Welcome to Karupatti Shop</h1>
+                <p class="lead text-muted">Pure Palm Jaggery - Traditional Natural Sweetener</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- New User Card -->
+                <div class="col-md-6">
+                    <div class="card shadow-lg h-100">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-user-plus" style="font-size: 3rem; color: #667eea;"></i>
+                            </div>
+                            <h3 class="card-title mb-3">New User?</h3>
+                            <p class="card-text text-muted mb-4">Create a new account and start shopping or selling with us.</p>
+                            <a href="{% url 'accounts:phone_verification' %}" class="btn btn-primary btn-lg w-100">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Existing User Card -->
+                <div class="col-md-6">
+                    <div class="card shadow-lg h-100">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-sign-in-alt" style="font-size: 3rem; color: #764ba2;"></i>
+                            </div>
+                            <h3 class="card-title mb-3">Already a Member?</h3>
+                            <p class="card-text text-muted mb-4">Log in to your account to access your dashboard and orders.</p>
+                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg w-100">Log In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <div class="row g-4 mt-5">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-lock" style="font-size: 2rem; color: #667eea;"></i>
+                        </div>
+                        <h5>Secure Verification</h5>
+                        <p class="text-muted small">Phone OTP verification for account security</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-shopping-cart" style="font-size: 2rem; color: #667eea;"></i>
+                        </div>
+                        <h5>Easy Shopping</h5>
+                        <p class="text-muted small">Browse and purchase quality products</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-store" style="font-size: 2rem; color: #667eea;"></i>
+                        </div>
+                        <h5>Become a Seller</h5>
+                        <p class="text-muted small">Start your own shop and grow your business</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    }
+</style>
+{% endblock %}

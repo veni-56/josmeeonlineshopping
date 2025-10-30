@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Documents - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Manage Documents</h2>
+            
+            <a href="{% url 'shops:upload_document' %}" class="btn btn-primary mb-3">Upload New Document</a>
+            
+            {% if documents %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Uploaded Date</th>
+                                <th>Verification Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                                <tr>
+                                    <td>{{ doc.get_document_type_display }}</td>
+                                    <td>{{ doc.uploaded_at|date:"M d, Y H:i" }}</td>
+                                    <td>
+                                        {% if doc.is_verified %}
+                                            <span class="badge bg-success">✓ Verified</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">⏳ Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ doc.document_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">Download</a>
+                                        <form method="post" action="{% url 'shops:delete_document' doc.id %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <strong>No documents uploaded yet.</strong> Please upload your PAN certificate, GST certificate, and other supporting documents to complete your seller verification.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

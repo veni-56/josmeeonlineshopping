@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Documents - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4">Upload Supporting Documents</h2>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Upload New Document</h5>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.document_type.id_for_label }}" class="form-label">Document Type</label>
+                            {{ form.document_type }}
+                            {% if form.document_type.errors %}
+                                <div class="text-danger small mt-1">{{ form.document_type.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.document_file.id_for_label }}" class="form-label">Document File</label>
+                            {{ form.document_file }}
+                            <small class="text-muted">Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 10MB)</small>
+                            {% if form.document_file.errors %}
+                                <div class="text-danger small mt-1">{{ form.document_file.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Upload Document</button>
+                    </form>
+                </div>
+            </div>
+            
+            <h5 class="mb-3">Your Documents</h5>
+            {% if documents %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Uploaded</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                                <tr>
+                                    <td>{{ doc.get_document_type_display }}</td>
+                                    <td>{{ doc.uploaded_at|date:"M d, Y" }}</td>
+                                    <td>
+                                        {% if doc.is_verified %}
+                                            <span class="badge bg-success">Verified</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ doc.document_file.url }}" class="btn btn-sm btn-info" target="_blank">View</a>
+                                        <form method="post" action="{% url 'shops:delete_document' doc.id %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this document?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">No documents uploaded yet.</div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Shop Information</h5>
+                    <p><strong>Shop Name:</strong> {{ shop.name }}</p>
+                    <p><strong>PAN:</strong> {{ shop.pan_number|default:"Not provided" }}</p>
+                    <p><strong>GST:</strong> {{ shop.gst_number|default:"Not provided" }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if shop.is_verified %}
+                            <span class="badge bg-success">Verified</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending Verification</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

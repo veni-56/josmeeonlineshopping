@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}My Documents - Karupatti Shop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">My Documents</h2>
+                <a href="{% url 'accounts:upload_seller_documents' %}" class="btn btn-primary">Upload New Document</a>
+            </div>
+            
+            {% if documents %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Status</th>
+                                <th>Uploaded Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                            <tr>
+                                <td>
+                                    <strong>{{ doc.get_document_type_display }}</strong>
+                                </td>
+                                <td>
+                                    {% if doc.status == 'approved' %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% elif doc.status == 'rejected' %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ doc.uploaded_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{{ doc.document_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">View</a>
+                                </td>
+                            </tr>
+                            {% if doc.status == 'rejected' and doc.rejection_reason %}
+                            <tr class="table-danger">
+                                <td colspan="4">
+                                    <small><strong>Rejection Reason:</strong> {{ doc.rejection_reason }}</small>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">No documents uploaded yet. <a href="{% url 'accounts:upload_seller_documents' %}">Upload your first document</a></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
